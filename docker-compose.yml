@@ -1,0 +1,36 @@
+services:
+  mongo:
+    image: mongo:7
+    container_name: brainly-mongo
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+  backend:
+    build: ./Brainly-Backend
+    container_name: brainly-backend
+    restart: unless-stopped
+    depends_on:
+      - mongo
+    ports:
+      - "3000:3000"
+    env_file:
+      - ./Brainly-Backend/.env
+    environment:
+      # Overrides whatever is in .env so the backend always talks to the
+      # 'mongo' service by its container name, not localhost/Atlas.
+      MONGO_URI: mongodb://mongo:27017/brainly
+
+  frontend:
+    build: ./Brainly-Main-Frontend
+    container_name: brainly-frontend
+    restart: unless-stopped
+    depends_on:
+      - backend
+    ports:
+      - "5173:80"
+
+volumes:
+  mongo-data:
