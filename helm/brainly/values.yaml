@@ -1,14 +1,14 @@
 backend:
   image:
     repository: ankushdevopsleopard/brainly-backend
-    tag: latest
+    tag: 5
   replicas: 1
   port: 3000
 
 frontend:
   image:
     repository: ankushdevopsleopard/brainly-frontend
-    tag: latest
+    tag: 5
   replicas: 1
   port: 80
   service:
